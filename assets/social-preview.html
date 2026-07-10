@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:#0e0c0a;}
+  *{font-family:-apple-system,'SF Pro Display','Segoe UI',sans-serif;}
+</style>
+</head>
+<body>
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#181310"/>
+      <stop offset="1" stop-color="#241a12"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0" stop-color="#e8825a" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#e8825a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e2118"/>
+      <stop offset="1" stop-color="#1c1410"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect x="640" y="0" width="640" height="640" fill="url(#glow)"/>
+
+  <!-- left: wordmark -->
+  <text x="84" y="208" font-size="84" font-weight="800" fill="#f5efe8" letter-spacing="-2">fable-baton</text>
+  <text x="88" y="268" font-size="30" fill="#c9b9a8">Fable 5 holds the baton. The orchestra plays.</text>
+
+  <text x="88" y="342" font-size="22" fill="#8f8172">Fable keeps the judgment. Tiered agents do the labor.</text>
+  <text x="88" y="376" font-size="22" fill="#8f8172">Delegation enforced by hooks, proven in CI.</text>
+
+  <rect x="84" y="428" rx="12" width="520" height="58" fill="#26201a" stroke="#3d3227" stroke-width="1.5"/>
+  <text x="110" y="465" font-size="21" font-family="SF Mono, Menlo, monospace" fill="#e8b98a">/plugin install fable-baton@fable-baton</text>
+
+  <text x="88" y="548" font-size="20" fill="#6e6255">MIT · zero config · every repo, every session</text>
+
+  <!-- stage -->
+  <ellipse cx="960" cy="576" rx="330" ry="52" fill="url(#stage)"/>
+
+  <!-- conductor podium -->
+  <path d="M 920 470 L 1000 470 L 992 512 L 928 512 Z" fill="#33251a"/>
+  <rect x="914" y="464" width="92" height="10" rx="5" fill="#453222"/>
+
+  <!-- conductor: original blob character -->
+  <g>
+    <!-- body -->
+    <path d="M 926 462 C 922 408 938 372 960 372 C 982 372 998 408 994 462 Z" fill="#e8825a"/>
+    <!-- head -->
+    <circle cx="960" cy="346" r="34" fill="#ef9068"/>
+    <!-- eyes -->
+    <circle cx="948" cy="342" r="4.5" fill="#241a12"/>
+    <circle cx="972" cy="342" r="4.5" fill="#241a12"/>
+    <!-- smile -->
+    <path d="M 950 358 Q 960 366 970 358" stroke="#241a12" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- right arm resting -->
+    <path d="M 992 408 Q 1014 420 1010 440" stroke="#e8825a" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <!-- left arm raised with baton -->
+    <path d="M 930 406 Q 906 384 892 356" stroke="#e8825a" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <line x1="892" y1="356" x2="856" y2="298" stroke="#f5efe8" stroke-width="5" stroke-linecap="round"/>
+    <!-- sparkle at baton tip -->
+    <path d="M 850 288 L 854 278 L 858 288 L 868 292 L 858 296 L 854 306 L 850 296 L 840 292 Z" fill="#ffd9a0"/>
+  </g>
+
+  <!-- music notes -->
+  <text x="1046" y="300" font-size="30" fill="#c9b9a8" opacity="0.8">&#9834;</text>
+  <text x="1092" y="352" font-size="24" fill="#a08f7c" opacity="0.7">&#9835;</text>
+  <text x="806" y="252" font-size="24" fill="#a08f7c" opacity="0.6">&#9834;</text>
+
+  <!-- orchestra: four tiered agents -->
+  <g text-anchor="middle">
+    <!-- scout -->
+    <circle cx="756" cy="520" r="26" fill="#7ad3c9"/>
+    <circle cx="747" cy="516" r="3.4" fill="#12302c"/>
+    <circle cx="765" cy="516" r="3.4" fill="#12302c"/>
+    <path d="M 749 527 Q 756 532 763 527" stroke="#12302c" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <text x="756" y="580" font-size="19" font-weight="700" fill="#d8cfc4">scout</text>
+    <text x="756" y="604" font-size="16" fill="#8f8172">Haiku</text>
+
+    <!-- executor -->
+    <circle cx="884" cy="546" r="26" fill="#6fa8ff"/>
+    <circle cx="875" cy="542" r="3.4" fill="#101f38"/>
+    <circle cx="893" cy="542" r="3.4" fill="#101f38"/>
+    <path d="M 877 553 Q 884 558 891 553" stroke="#101f38" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <text x="884" y="606" font-size="19" font-weight="700" fill="#d8cfc4">executor</text>
+    <text x="884" y="630" font-size="16" fill="#8f8172">Sonnet</text>
+
+    <!-- architect -->
+    <circle cx="1036" cy="546" r="26" fill="#b78af7"/>
+    <circle cx="1027" cy="542" r="3.4" fill="#221238"/>
+    <circle cx="1045" cy="542" r="3.4" fill="#221238"/>
+    <path d="M 1029 553 Q 1036 558 1043 553" stroke="#221238" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <text x="1036" y="606" font-size="19" font-weight="700" fill="#d8cfc4">architect</text>
+    <text x="1036" y="630" font-size="16" fill="#8f8172">Opus</text>
+
+    <!-- verifier -->
+    <circle cx="1164" cy="520" r="26" fill="#8fd97a"/>
+    <circle cx="1155" cy="516" r="3.4" fill="#16300f"/>
+    <circle cx="1173" cy="516" r="3.4" fill="#16300f"/>
+    <path d="M 1157 527 Q 1164 532 1171 527" stroke="#16300f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <text x="1164" y="580" font-size="19" font-weight="700" fill="#d8cfc4">verifier</text>
+    <text x="1164" y="604" font-size="16" fill="#8f8172">Haiku</text>
+  </g>
+</svg>
+</body>
+</html>

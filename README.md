@@ -10,7 +10,7 @@ Fable 5 is the strongest model available on a Claude subscription - and the most
 
 ## How it works
 
-Three pieces, all shipped by the plugin:
+Four pieces, all shipped by the plugin:
 
 1. **Four tiered agents**, each pinned to a model:
 
@@ -21,9 +21,11 @@ Three pieces, all shipped by the plugin:
    | `architect` | Opus | Complex implementation, deep debugging, high-risk work, reviewing cheaper agents |
    | `verifier` | Haiku | Evidence checks: tests green, diff matches plan, no regressions |
 
-2. **An orchestration policy**, injected into every new session by a SessionStart hook and re-asserted by a short per-prompt reminder (UserPromptSubmit hook). The one-time injection alone fades in long sessions and can be lost to compaction; the reminder keeps delegation the default at the moment it matters. The policy tells Fable what to keep (judgment) and what to route down (labor), with anti-waste rules: no pointless fan-out, focused context per agent, and no delegation for genuinely trivial single steps. A PostToolUse counter hook backs this with enforcement by measurement, not just reminder: it deterministically detects consecutive-inline-call streaks and injects a delegation notice the moment the streak crosses the threshold.
+2. **An orchestration policy**, injected into every new session by a SessionStart hook. The policy tells Fable what to keep (judgment) and what to route down (labor), with anti-waste rules: no pointless fan-out, focused context per agent, and no delegation for genuinely trivial single steps.
 
-3. **A setup skill** (`baton-setup`) that configures your default model to `best` (Fable 5, with Opus fallback) - the one thing a plugin can't set by itself.
+3. **Enforcement**, because a one-time policy is not enough - models drift back to doing everything inline as a session goes on, and we saw it happen in real sessions. So the plugin enforces in three layers: the policy at session start, a short reminder injected on every prompt (UserPromptSubmit hook), and a PostToolUse hook that counts consecutive inline tool calls and injects a delegation notice mid-streak (threshold 4, configurable via `FABLE_BATON_TRIPWIRE`, resets whenever an agent is used). This is not foolproof - the model can still ignore a notice - but ignoring a fresh, explicit instruction mid-streak is much harder than forgetting page-one prose.
+
+4. **A setup skill** (`baton-setup`) that configures your default model to `best` (Fable 5, with Opus fallback) - the one thing a plugin can't set by itself.
 
 High-risk areas (auth, billing, migrations, concurrency, public APIs, …) get special handling: Fable decides, `architect` executes or reviews, `verifier` confirms with evidence.
 
@@ -47,7 +49,7 @@ Then ask Claude to **"run baton-setup"** - it sets `model: "best"` in your `~/.c
 
 ## Day-to-day
 
-Nothing. That's the point - every new chat, in any repo, starts with the policy loaded and the agents available. Fable delegates on its own. If you want to check it's active, ask: *"which subagent types are available?"* - you should see scout, executor, architect, and verifier.
+Nothing. That's the point - every new chat, in any repo, starts with the policy loaded and the agents available. Fable delegates on its own. If you want to check it's active, ask: *"which subagent types are available?"* - you should see scout, executor, architect, and verifier. You can also watch the plugin work: after a few inline tool calls in a row you will see a `[fable-baton]` notice in the session telling the model to delegate.
 
 To skip orchestration for a session, just say so ("don't delegate in this session") - the policy defers to your instructions.
 

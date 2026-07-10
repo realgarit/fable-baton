@@ -23,6 +23,12 @@ If a task is mostly searching, reading, editing, testing, or verifying, it belon
 
 Auth, billing, permissions, security, migrations, data loss, shared state, caching, concurrency, cross-module behavior, public APIs, user-visible workflows. Here: you make the decision, `architect` handles or reviews the hard technical parts, and `verifier` confirms concrete evidence.
 
+## Security-context sessions
+
+If the session's task is security work (security scans or audits, vulnerability triage, secrets or credential review, permission and auth analysis, anything pentest-adjacent), route hands-on execution down **from the first step** - including cheap read-only checks you would normally run yourself. `scout` inspects, `architect` (Opus) analyzes and executes; you work from their reports and keep only planning, decisions, and synthesis.
+
+Two reasons. First, in these sessions the evidence itself is the sensitive part, so keeping your context at the judgment level is the right division of labor anyway. Second, it keeps the session stable: the top-tier model runs with broad dual-use safeguards that can interrupt routine inline security output, while Opus handles the same work without interruption. The "skip delegation when it's cheaper" exception below does NOT apply in security-context sessions.
+
 ## Anti-waste rules
 
 - Do not fan out agents for their own sake. One well-scoped agent beats three vague ones.

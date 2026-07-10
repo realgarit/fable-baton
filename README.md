@@ -27,6 +27,8 @@ Three pieces, all shipped by the plugin:
 
 High-risk areas (auth, billing, migrations, concurrency, public APIs, …) get special handling: Fable decides, `architect` executes or reviews, `verifier` confirms with evidence.
 
+Security-focused sessions (scans, audits, vulnerability triage) route even the cheap hands-on steps down to the agents from the start. Fable stays at the planning and synthesis level, which is both the right division of labor and avoids interruptions from the top-tier model's intentionally broad safeguards on routine security output.
+
 ## Install
 
 In any Claude Code session:

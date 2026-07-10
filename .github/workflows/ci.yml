@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        run: git ls-files '*.json' | xargs -I{} python3 -m json.tool {} > /dev/null
+
+      - name: Dash lint (no em dash or en dash)
+        run: '! git grep -nIP ''\x{2014}|\x{2013}'' -- .'
+
+      - name: Shell syntax check
+        run: bash -n hooks/*.sh
+
+      - name: Hook smoke test
+        run: |
+          for script in hooks/*.sh; do
+            output="$(CLAUDE_PLUGIN_ROOT=. bash "$script")"
+            exit_status=$?
+            if [ "$exit_status" -ne 0 ]; then
+              echo "FAIL: $script exited with status $exit_status"
+              exit 1
+            fi
+            if [ -z "$output" ]; then
+              echo "FAIL: $script produced no output"
+              exit 1
+            fi
+            echo "OK: $script"
+          done

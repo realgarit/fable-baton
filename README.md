@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/realgarit/fable-baton/actions/workflows/ci.yml/badge.svg)](https://github.com/realgarit/fable-baton/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-![fable-baton: Fable conducts, tiered agents play](assets/social-preview.png)
+![fable-baton: Fable conducts, tiered agents play](assets/hero.gif)
 
 **Fable 5 holds the baton. The orchestra plays.**
 

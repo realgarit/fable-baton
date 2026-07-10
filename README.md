@@ -2,13 +2,13 @@
 
 **Fable 5 holds the baton. The orchestra plays.**
 
-A Claude Code plugin that turns Fable 5 into a token-frugal orchestrator: Fable keeps the judgment - intent, architecture, decomposition, tradeoffs, final review - while tiered subagents (Opus / Sonnet / Haiku) do the labor. Install once, and every new session in every repo starts orchestrated.
+A Claude Code plugin that makes Fable 5 the orchestrator. Fable keeps the judgment: intent, architecture, decomposition, tradeoffs, final review. Tiered subagents on Opus, Sonnet and Haiku do the labor. Install once and every new session in every repo starts this way.
 
 ## Why
 
-Fable 5 is the strongest model available on a Claude subscription - and the most expensive one to burn on grep runs and boilerplate. fable-baton routes every piece of work to the **cheapest tier that can do it well**, so you can drive Fable 5 as your daily model without fearing token cost.
+Fable 5 is the strongest model you can get on a Claude subscription. It is also the most expensive one to burn on grep runs and boilerplate. fable-baton routes each piece of work to the **cheapest tier that can do it well**, so you can keep Fable 5 as your daily model.
 
-There is a second goal: ending the mid-session switcheroo. When Fable time runs dry, the usual outcome is a silent downgrade and Opus takes over your session. With fable-baton the relationship is inverted: Fable spends its tokens on judgment only, Opus does the heavy lifting below it as a subagent, and Fable stays the one holding the context. The tiering is Opus/Sonnet/Haiku today and is meant to generalize to other models and structures later.
+There is a second goal: stopping the mid-session switcheroo. When Fable time runs dry, Opus quietly takes over your session. With fable-baton, Fable spends its tokens on judgment only, Opus does the heavy work below it as a subagent, and Fable stays the one holding the context. The tiers are Opus, Sonnet and Haiku today. Later this should open up to other models and structures.
 
 ## How it works
 
@@ -25,13 +25,13 @@ Four pieces, all shipped by the plugin:
 
 2. **An orchestration policy**, injected into every new session by a SessionStart hook. The policy tells Fable what to keep (judgment) and what to route down (labor), with anti-waste rules: no pointless fan-out, focused context per agent, and no delegation for genuinely trivial single steps.
 
-3. **Enforcement**, because a one-time policy is not enough - models drift back to doing everything inline as a session goes on, and we saw it happen in real sessions. So the plugin enforces in three layers: the policy at session start, a short reminder injected on every prompt (UserPromptSubmit hook), and a PostToolUse hook that counts consecutive inline tool calls and injects a delegation notice mid-streak (threshold 4, configurable via `FABLE_BATON_TRIPWIRE`, resets whenever an agent is used). This is not foolproof - the model can still ignore a notice - but ignoring a fresh, explicit instruction mid-streak is much harder than forgetting page-one prose.
+3. **Enforcement.** A one-time policy is not enough. Models drift back to doing everything inline as a session goes on. We watched it happen in real sessions. So the plugin works in three layers: the policy at session start, a short reminder on every prompt (UserPromptSubmit hook), and a PostToolUse hook that counts consecutive inline tool calls and injects a delegation notice once a streak crosses the threshold (default 4, set with `FABLE_BATON_TRIPWIRE`, resets whenever an agent is used). The model can still ignore a notice. But ignoring a fresh instruction mid-streak is much harder than forgetting something from page one.
 
 4. **A setup skill** (`baton-setup`) that configures your default model to `best` (Fable 5, with Opus fallback) - the one thing a plugin can't set by itself.
 
 High-risk areas (auth, billing, migrations, concurrency, public APIs, …) get special handling: Fable decides, `architect` executes or reviews, `verifier` confirms with evidence.
 
-Security-focused sessions (scans, audits, vulnerability triage) route even the cheap hands-on steps down to the agents from the start. Fable stays at the planning and synthesis level, which is both the right division of labor and avoids interruptions from the top-tier model's intentionally broad safeguards on routine security output.
+Security-focused sessions (scans, audits, vulnerability triage) send even the cheap hands-on steps to the agents from the start. Fable stays at planning and synthesis. That is the right split anyway, and it avoids interruptions from the top model's intentionally broad safeguards on routine security output.
 
 ## Install
 

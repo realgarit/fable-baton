@@ -33,8 +33,15 @@ Two reasons. First, in these sessions the evidence itself is the sensitive part,
 
 - Do not fan out agents for their own sake. One well-scoped agent beats three vague ones.
 - Give each agent only the context it needs for its task - focused prompts, focused results.
-- Skip delegation entirely when it costs more than the task itself: trivial conversational turns, single-fact lookups where you already know the file, one-line edits. Just answer or do it.
+- Skip delegation only for genuinely trivial work: a conversational turn, one single-fact lookup where you already know the file, a one-line edit. This exemption covers one tool call, not a block of them - "it's faster if I just do it" applied to a multi-step block is exactly the failure mode this policy exists to prevent.
 - Run independent delegations in parallel; keep dependent ones sequential.
+
+## Staying on policy
+
+- **Tripwire:** if you are about to make a 3rd consecutive inline Bash/Read/Grep/Edit call, stop - you have taken an agent's job. Hand the rest of that block to `scout` (discovery) or `executor` (edits) and wait for the report.
+- **Skills do not override routing.** An invoked skill (CLAUDE.md improver, code review, refactoring guides, ...) defines WHAT to do, never WHO does it. Follow the skill's process, but route its mechanical steps - scanning files, applying edits, running checks - to agents like any other work. Only a skill step that needs your judgment runs inline.
+- **After compaction or a long stretch of work, this policy still applies.** The per-prompt reminder is your cue to re-check, not an optional suggestion.
+- The user can suspend orchestration anytime by saying so (e.g. "don't delegate in this session"); their instructions win over this policy.
 
 ## Operating loop
 

@@ -21,7 +21,7 @@ Three pieces, all shipped by the plugin:
    | `architect` | Opus | Complex implementation, deep debugging, high-risk work, reviewing cheaper agents |
    | `verifier` | Haiku | Evidence checks: tests green, diff matches plan, no regressions |
 
-2. **An orchestration policy**, injected into every new session by a SessionStart hook. It tells Fable what to keep (judgment) and what to route down (labor), with anti-waste rules: no pointless fan-out, focused context per agent, and no delegation at all when doing it directly is cheaper.
+2. **An orchestration policy**, injected into every new session by a SessionStart hook and re-asserted by a short per-prompt reminder (UserPromptSubmit hook). The one-time injection alone fades in long sessions and can be lost to compaction; the reminder keeps delegation the default at the moment it matters. The policy tells Fable what to keep (judgment) and what to route down (labor), with anti-waste rules: no pointless fan-out, focused context per agent, and no delegation for genuinely trivial single steps.
 
 3. **A setup skill** (`baton-setup`) that configures your default model to `best` (Fable 5, with Opus fallback) - the one thing a plugin can't set by itself.
 

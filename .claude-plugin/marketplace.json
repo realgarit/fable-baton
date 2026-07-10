@@ -1,0 +1,14 @@
+{
+  "name": "fable-baton",
+  "description": "Fable 5 as a token-frugal orchestrator with tiered Opus/Sonnet/Haiku agents.",
+  "owner": {
+    "name": "realgarit"
+  },
+  "plugins": [
+    {
+      "name": "fable-baton",
+      "source": "./",
+      "description": "Turns Fable 5 into a token-frugal orchestrator: Fable keeps judgment, tiered Opus/Sonnet/Haiku agents do the labor."
+    }
+  ]
+}

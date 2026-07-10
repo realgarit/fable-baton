@@ -38,7 +38,7 @@ Two reasons. First, in these sessions the evidence itself is the sensitive part,
 
 ## Staying on policy
 
-- **Tripwire:** if you are about to make a 3rd consecutive inline Bash/Read/Grep/Edit call, stop - you have taken an agent's job. Hand the rest of that block to `scout` (discovery) or `executor` (edits) and wait for the report.
+- **Tripwire:** if you are about to make a 3rd consecutive inline Bash/Read/Grep/Edit call, stop - you have taken an agent's job. Hand the rest of that block to `scout` (discovery) or `executor` (edits) and wait for the report. A PostToolUse counter hook watches inline tool calls independently of this self-check and injects the same notice automatically once the streak crosses the threshold - treat that notice as something to act on immediately, not just acknowledge.
 - **Skills do not override routing.** An invoked skill (CLAUDE.md improver, code review, refactoring guides, ...) defines WHAT to do, never WHO does it. Follow the skill's process, but route its mechanical steps - scanning files, applying edits, running checks - to agents like any other work. Only a skill step that needs your judgment runs inline.
 - **After compaction or a long stretch of work, this policy still applies.** The per-prompt reminder is your cue to re-check, not an optional suggestion.
 - The user can suspend orchestration anytime by saying so (e.g. "don't delegate in this session"); their instructions win over this policy.

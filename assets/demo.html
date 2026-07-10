@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:#141210;height:100%;}
+  body{display:flex;align-items:center;justify-content:center;}
+  .term{
+    width:1240px;height:600px;background:#1b1815;border-radius:14px;
+    border:1px solid #322a22;box-shadow:0 20px 60px rgba(0,0,0,.5);
+    font-family:"SF Mono",Menlo,monospace;font-size:17px;line-height:1.65;
+    padding:18px 30px 24px;box-sizing:border-box;overflow:hidden;position:relative;
+  }
+  .bar{display:flex;gap:9px;margin-bottom:14px;}
+  .dot{width:13px;height:13px;border-radius:50%;}
+  .r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+  .title{position:absolute;top:16px;left:0;right:0;text-align:center;color:#6e6255;font-size:15px;}
+  .line{opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;white-space:pre-wrap;margin-bottom:6px;}
+  .line.show{opacity:1;transform:none;}
+  .u{color:#e8d9c5}
+  .dim{color:#7a6d5e}
+  .tool{color:#b9a98f}
+  .notice{color:#ffb46b;}
+  .agent{color:#7ad3c9}
+  .cursor{display:inline-block;width:10px;height:20px;background:#e8d9c5;vertical-align:text-bottom;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="term">
+  <div class="bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+  <div class="title">claude</div>
+  <div class="line"><span class="u">&gt; fix the failing auth tests</span></div>
+  <div class="line"><span class="dim">UserPromptSubmit hook success: [fable-baton] Delegation check for this turn: searching, reading files, editing, testing, and verifying go to agents (scout, executor, architect, verifier via the Agent tool); you keep judgment, decisions, and the final answer. Tripwire: reaching for a 3rd consecutive inline Bash/Read/Grep/Edit call means that block belongs to an agent. Skills define what to do, not who does it: delegate their mechanical steps too. Exempt: conversational turns, one quick lookup, a one-line edit. No exemptions in security-context sessions.</span></div>
+  <div class="line"><span class="tool">⏺ Bash(pnpm test 2&gt;&amp;1 | tail -3)</span></div>
+  <div class="line"><span class="tool">⏺ Read(api/test/auth.test.ts)</span></div>
+  <div class="line"><span class="tool">⏺ Grep("verifyToken", api/src)</span></div>
+  <div class="line"><span class="tool">⏺ Edit(api/src/services/auth.ts)</span></div>
+  <div class="line"><span class="notice">PostToolUse hook additional context: [fable-baton] 4 consecutive inline tool calls without delegating. Main session: this block belongs to an agent (scout for discovery, executor for edits) - delegate the remainder now. Subagents executing a delegated task: ignore this notice.</span></div>
+  <div class="line"><span class="agent">⏺ Agent(fable-baton:executor "fix the remaining auth failures, run the suite, report evidence")</span></div>
+  <div class="line"><span class="agent">  ⎿ 3 tests fixed, suite green, exit 0.</span></div>
+  <div class="line"><span class="u">&gt; </span><span class="cursor"></span></div>
+</div>
+<script>
+  var lines = document.querySelectorAll('.line');
+  var step = new URLSearchParams(location.search).get('step');
+  var n = step === null ? lines.length : parseInt(step, 10);
+  lines.forEach(function(el, i){ if (i < n) el.classList.add('show'); });
+</script>
+</body>
+</html>

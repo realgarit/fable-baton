@@ -63,6 +63,10 @@ To skip orchestration for a session, just say so ("don't delegate in this sessio
 
 Every prompt gets a short delegation reminder, and when the model does too much inline work in a row, the counter steps in:
 
+![A session where the counter fires and the model delegates](assets/fable-baton-demo.gif)
+
+*Recreated replay. The hook text shown is the exact output from a real session.*
+
 ```
 [fable-baton] 4 consecutive inline tool calls without delegating. Main session: this block
 belongs to an agent (scout for discovery, executor for edits) - delegate the remainder now.

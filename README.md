@@ -1,5 +1,7 @@
 # fable-baton 🪄
 
+[![CI](https://github.com/realgarit/fable-baton/actions/workflows/ci.yml/badge.svg)](https://github.com/realgarit/fable-baton/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 **Fable 5 holds the baton. The orchestra plays.**
 
 A Claude Code plugin that makes Fable 5 the orchestrator. Fable keeps the judgment: intent, architecture, decomposition, tradeoffs, final review. Tiered subagents on Opus, Sonnet and Haiku do the labor. Install once and every new session in every repo starts this way.
@@ -55,6 +57,17 @@ Nothing. That's the point - every new chat, in any repo, starts with the policy 
 
 To skip orchestration for a session, just say so ("don't delegate in this session") - the policy defers to your instructions.
 
+## What you'll see
+
+Every prompt gets a short delegation reminder, and when the model does too much inline work in a row, the counter steps in:
+
+```
+[fable-baton] 4 consecutive inline tool calls without delegating. Main session: this block
+belongs to an agent (scout for discovery, executor for edits) - delegate the remainder now.
+```
+
+That notice comes from a deterministic PostToolUse hook, and the CI suite proves it fires at exactly the threshold.
+
 ## Uninstall
 
 ```
@@ -62,6 +75,16 @@ To skip orchestration for a session, just say so ("don't delegate in this sessio
 ```
 
 Then, if you want your old default model back, restore `model` in `~/.claude/settings.json` from the `settings.json.baton-backup-*` file that baton-setup created.
+
+## Alternatives
+
+Worth knowing before you pick this:
+
+- [fable-advisor](https://github.com/DannyMac180/fable-advisor) keeps day-to-day work on other vendors' models and calls Fable at decision points. Choose it for multi-vendor routing. fable-baton keeps Fable conducting the whole session, so your context never leaves it.
+- [claude-code-workflow-orchestration](https://github.com/barkain/claude-code-workflow-orchestration) ships eight agents and adaptive nudges. Choose it for complex workflow graphs.
+- [fable5-orchestrator](https://github.com/Rylaa/fable5-orchestrator) is close in spirit, with a requirements ledger and per-workflow verification. fable-baton stays smaller on purpose: four agents, one policy, three enforcement layers, zero config.
+
+Pick fable-baton when you want install-and-go and Fable staying in charge.
 
 ## License
 

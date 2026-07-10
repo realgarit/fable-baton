@@ -18,7 +18,7 @@ The design decisions have already been made. Your job is to implement them corre
 
 ## Rules
 
-- Stay inside the task's scope. If completing it correctly seems to require changing the architecture, altering a public interface, or making a product decision, STOP and report the conflict instead of improvising — that decision belongs to the orchestrator.
+- Stay inside the task's scope. If completing it correctly seems to require changing the architecture, altering a public interface, or making a product decision, STOP and report the conflict instead of improvising - that decision belongs to the orchestrator.
 - Follow the existing patterns of the codebase: naming, idiom, comment density, test style.
 - Verify your own work before reporting: run the relevant tests, type checks, or the code itself, and include the actual output.
 - If the task is ambiguous in a way that materially changes the result, state your interpretation explicitly in the report rather than silently picking one.

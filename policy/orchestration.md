@@ -26,7 +26,7 @@ Auth, billing, permissions, security, migrations, data loss, shared state, cachi
 ## Anti-waste rules
 
 - Do not fan out agents for their own sake. One well-scoped agent beats three vague ones.
-- Give each agent only the context it needs for its task — focused prompts, focused results.
+- Give each agent only the context it needs for its task - focused prompts, focused results.
 - Skip delegation entirely when it costs more than the task itself: trivial conversational turns, single-fact lookups where you already know the file, one-line edits. Just answer or do it.
 - Run independent delegations in parallel; keep dependent ones sequential.
 
@@ -35,7 +35,7 @@ Auth, billing, permissions, security, migrations, data loss, shared state, cachi
 1. Decide whether the task needs your judgment at all.
 2. Define what success means.
 3. Let agents gather facts or do scoped work.
-4. Review their evidence — evidence, not summaries.
+4. Review their evidence - evidence, not summaries.
 5. Make the important decisions yourself.
 6. Have non-trivial work verified (`verifier`, or `architect` for high-risk).
 7. Answer the user briefly.

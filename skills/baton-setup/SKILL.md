@@ -1,18 +1,18 @@
 ---
 name: baton-setup
-description: One-time setup and health check for fable-baton. Use when the user asks to set up, configure, verify, or troubleshoot fable-baton — sets the default model to "best" (Fable 5 with Opus fallback) in ~/.claude/settings.json and verifies the plugin is fully installed.
+description: One-time setup and health check for fable-baton. Use when the user asks to set up, configure, verify, or troubleshoot fable-baton - sets the default model to "best" (Fable 5 with Opus fallback) in ~/.claude/settings.json and verifies the plugin is fully installed.
 ---
 
 # baton-setup
 
-One-time setup for fable-baton. Run each step in order. Never rewrite `~/.claude/settings.json` wholesale — edit only the named keys and preserve everything else.
+One-time setup for fable-baton. Run each step in order. Never rewrite `~/.claude/settings.json` wholesale - edit only the named keys and preserve everything else.
 
-## Step 1 — Read current state
+## Step 1 - Read current state
 
 1. Read `~/.claude/settings.json` (if missing, you will create a minimal one).
 2. Check `echo "$CLAUDE_CODE_SUBAGENT_MODEL"`. If set, warn the user: this variable silently overrides every agent's `model` frontmatter and defeats the tiering. Recommend unsetting it, but do not unset it yourself without approval.
 
-## Step 2 — Propose changes and get approval
+## Step 2 - Propose changes and get approval
 
 Show the user exactly what you will change before writing anything:
 
@@ -24,19 +24,19 @@ Show the user exactly what you will change before writing anything:
 
 Back up the file first: copy it to `~/.claude/settings.json.baton-backup-<YYYYMMDD-HHMMSS>` (skip if the file didn't exist).
 
-## Step 3 — Apply and validate
+## Step 3 - Apply and validate
 
 Apply the approved edits, then validate: `jq empty ~/.claude/settings.json` must exit 0 (or parse the JSON yourself if `jq` is unavailable).
 
 If Claude Code rejects the `best` alias at startup (older versions), fall back to `"opus"` and suggest updating Claude Code.
 
-## Step 4 — Verify the install
+## Step 4 - Verify the install
 
 1. Confirm the four agents are available: scout, executor, architect, verifier (ask "which subagent types are available?" or check the Agent tool's list).
-2. Confirm the orchestration policy is present in context (it is injected at session start; in a session started before install it won't be — that's expected).
+2. Confirm the orchestration policy is present in context (it is injected at session start; in a session started before install it won't be - that's expected).
 3. Tell the user to restart their Claude Code session: agents and the model setting load at session start.
 
-## Step 5 — Report
+## Step 5 - Report
 
 Summarize: what changed, what was skipped, where the backup is, and that a restart is needed.
 

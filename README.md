@@ -8,6 +8,8 @@ A Claude Code plugin that turns Fable 5 into a token-frugal orchestrator: Fable 
 
 Fable 5 is the strongest model available on a Claude subscription - and the most expensive one to burn on grep runs and boilerplate. fable-baton routes every piece of work to the **cheapest tier that can do it well**, so you can drive Fable 5 as your daily model without fearing token cost.
 
+There is a second goal: ending the mid-session switcheroo. When Fable time runs dry, the usual outcome is a silent downgrade and Opus takes over your session. With fable-baton the relationship is inverted: Fable spends its tokens on judgment only, Opus does the heavy lifting below it as a subagent, and Fable stays the one holding the context. The tiering is Opus/Sonnet/Haiku today and is meant to generalize to other models and structures later.
+
 ## How it works
 
 Four pieces, all shipped by the plugin:

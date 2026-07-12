@@ -8,7 +8,7 @@
 
 A Claude Code plugin that makes Fable 5 the orchestrator. Fable keeps the judgment, tiered subagents on Opus, Sonnet and Haiku do the labor. Install once and every new session in every repo starts this way.
 
-**[Why](#why) · [How it works](#how-it-works) · [What you'll see](#what-youll-see) · [Install](#install) · [Day-to-day](#day-to-day) · [Alternatives](#alternatives)**
+**[Why](#why) · [Benchmark](#benchmark) · [How it works](#how-it-works) · [What you'll see](#what-youll-see) · [Install](#install) · [Day-to-day](#day-to-day) · [Alternatives](#alternatives)**
 
 ## Why
 
@@ -16,6 +16,20 @@ A Claude Code plugin that makes Fable 5 the orchestrator. Fable keeps the judgme
 - **No more switcheroo.** When Fable time runs dry, Opus quietly takes over your session. With fable-baton, Fable spends its tokens on judgment only, Opus does the heavy work below it as a subagent, and Fable stays the one holding the context.
 
 The tiers are Opus, Sonnet and Haiku today. Later this should open up to other models and structures.
+
+## Benchmark
+
+Numbers from a small controlled test, run 2026-07-13 on Claude Code 2.1.197 with plugin v1.3.0. The project was a zero dependency Node.js library with a test suite. Three tasks: fix two seeded bugs, implement a feature from a spec in TODO.md, and review the codebase for bugs. Each task ran headless via claude -p, twice with the plugin off and twice with it on, same session model (Fable 5) in both. Success was checked from outside the session: the test suite had to pass (for the feature task against hidden tests the session never saw) and the review had to find both seeded bugs. All 12 runs passed.
+
+| task | plugin off, total cost | plugin on, total cost | plugin on, cost split | Fable output tokens, off / on |
+|---|---|---|---|---|
+| bugfix | $0.96 | $1.15 | Fable $0.92, Sonnet $0.19, Haiku $0.04 | 2.4k / 2.2k |
+| feature | $1.52 | $1.50 | Fable $1.05, Sonnet $0.39, Haiku $0.06 | 6.1k / 3.4k |
+| review | $2.13 | $2.71 | Fable $1.61, Opus $1.05, Haiku $0.05 | 13.7k / 8.5k |
+
+Values are per run averages over the two reps. Read the table honestly. Total API cost comes out about the same and sometimes higher, because orchestration adds coordination on top of the work. What changes is where the tokens land. Fable's own output tokens drop 44 percent on the feature task and 38 percent on the review, and its share of the cost drops with them. That work moves to Sonnet, Haiku and Opus. If you pay per token through the API and only care about the total, the plugin will not save you money on small tasks. If you are on a subscription where Fable quota is what runs out and triggers the mid session model switch, this is the tradeoff you want: Fable stays available for judgment much longer and the session keeps its conductor.
+
+Keep in mind this is n=2 per cell on one small project, and variance between reps was real (one review run cost $3.25, the other $2.16). Treat the numbers as directional. The benchmark harness is not shipped with the plugin.
 
 ## How it works
 

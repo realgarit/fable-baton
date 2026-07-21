@@ -83,3 +83,52 @@ jobs:
             exit 1
           fi
           echo "OK: post-reset call confirms counter is back at 1"
+
+      - name: Tier adaptation test
+        run: |
+          rm -f "${TMPDIR:-/tmp}/fable-baton-tier-citier" "${TMPDIR:-/tmp}/fable-baton-count-citier"
+
+          output="$(echo '{}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
+          case "$output" in
+            *"Session model adaptation"*) echo "FAIL: no-model input must inject the base policy only"; exit 1 ;;
+            *"Orchestration policy"*) echo "OK: no-model input falls back to base policy" ;;
+            *) echo "FAIL: base policy missing from output"; exit 1 ;;
+          esac
+
+          output="$(echo '{"model":"claude-sonnet-5","session_id":"citier"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
+          case "$output" in
+            *"Session model adaptation: Sonnet"*) echo "OK: sonnet session gets the sonnet adaptation" ;;
+            *) echo "FAIL: sonnet adaptation missing from output"; exit 1 ;;
+          esac
+
+          output="$(echo '{"session_id":"citier"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/prompt-nudge.sh)"
+          case "$output" in
+            *"Sonnet session"*) echo "OK: prompt nudge picked up the persisted sonnet tier" ;;
+            *) echo "FAIL: prompt nudge did not adapt to the sonnet tier: $output"; exit 1 ;;
+          esac
+
+          export FABLE_BATON_TRIPWIRE=1
+          output="$(echo '{"tool_name":"Bash","session_id":"citier"}' | bash hooks/inline-counter.sh)"
+          case "$output" in
+            *"Sonnet session"*) echo "OK: counter notice adapted to the sonnet tier" ;;
+            *) echo "FAIL: counter notice did not adapt to the sonnet tier: $output"; exit 1 ;;
+          esac
+          unset FABLE_BATON_TRIPWIRE
+
+          output="$(echo '{"model":"claude-opus-4-8","session_id":"citier"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
+          case "$output" in
+            *"Session model adaptation: Opus"*) echo "OK: opus session gets the opus adaptation" ;;
+            *) echo "FAIL: opus adaptation missing from output"; exit 1 ;;
+          esac
+
+          output="$(echo '{"model":"claude-haiku-4-5-20251001","session_id":"citier"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
+          case "$output" in
+            *"Session model adaptation: Haiku"*) echo "OK: haiku session gets the haiku adaptation" ;;
+            *) echo "FAIL: haiku adaptation missing from output"; exit 1 ;;
+          esac
+
+          output="$(echo '{"model":"claude-fable-5","session_id":"citier"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
+          case "$output" in
+            *"Session model adaptation"*) echo "FAIL: fable session must not get an adaptation"; exit 1 ;;
+            *) echo "OK: fable session gets the base policy only" ;;
+          esac

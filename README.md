@@ -74,6 +74,8 @@ The routing table assumes Fable is on top. Run a session on another model and th
 
 The per-prompt reminder and the streak counter adapt too, so a Sonnet session is not nudged into hand-offs that save nothing.
 
+One caveat: current Claude Code builds do not tell hooks the session model at startup, so the plugin reads it from the session transcript. A brand-new session has no transcript yet, which means its first turn runs on the base policy and the adaptation arrives with the second prompt. Resumed sessions have a transcript and get it at session start.
+
 ## What you'll see
 
 Every prompt gets a short delegation reminder, and when the model does too much inline work in a row, the counter steps in:

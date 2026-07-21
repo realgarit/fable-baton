@@ -64,6 +64,16 @@ The model can still ignore a notice. But ignoring a fresh instruction mid-streak
 - **Security sessions** (scans, audits, vulnerability triage): even the cheap hands-on steps go to the agents from the start. Fable stays at planning and synthesis. That is the right split anyway, and it avoids interruptions from the top model's intentionally broad safeguards on routine security output.
 - **Setup skill**: `baton-setup` sets your default model to `best` (Fable 5, with Opus fallback) - the one thing a plugin can't set by itself.
 
+### Other session models
+
+The routing table assumes Fable is on top. Run a session on another model and the SessionStart hook detects it and appends a tier adaptation to the policy, so the cost logic stays correct:
+
+- **Sonnet session**: scout and verifier (Haiku) keep their jobs, edits happen inline (executor would be a lateral hand-off, kept only for context isolation), and architect (Opus) is reserved for problems Sonnet attempted and could not solve.
+- **Opus session**: everything below stays delegated; architect becomes a second-opinion tool instead of an escape hatch.
+- **Haiku session**: delegation flips from saving cost to buying capability - nontrivial work is routed up.
+
+The per-prompt reminder and the streak counter adapt too, so a Sonnet session is not nudged into hand-offs that save nothing.
+
 ## What you'll see
 
 Every prompt gets a short delegation reminder, and when the model does too much inline work in a row, the counter steps in:

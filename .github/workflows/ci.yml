@@ -132,3 +132,33 @@ jobs:
             *"Session model adaptation"*) echo "FAIL: fable session must not get an adaptation"; exit 1 ;;
             *) echo "OK: fable session gets the base policy only" ;;
           esac
+
+          rm -f "${TMPDIR:-/tmp}/fable-baton-tier-citranscript" "${TMPDIR:-/tmp}/fable-baton-adapted-citranscript"
+          printf '%s\n' '{"type":"user","message":{"content":[]}}' > "${TMPDIR:-/tmp}/baton-ci-transcript.jsonl"
+          printf '%s\n' '{"type":"assistant","message":{"model":"claude-sonnet-5","content":[]}}' >> "${TMPDIR:-/tmp}/baton-ci-transcript.jsonl"
+
+          output="$(echo '{"session_id":"citranscript","transcript_path":"'"${TMPDIR:-/tmp}"'/baton-ci-transcript.jsonl"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/prompt-nudge.sh)"
+          case "$output" in
+            *"Sonnet session"*"Session model adaptation: Sonnet"*) echo "OK: prompt nudge detected the tier from the transcript and announced it" ;;
+            *) echo "FAIL: prompt nudge did not detect and announce the transcript tier: $output"; exit 1 ;;
+          esac
+
+          output="$(echo '{"session_id":"citranscript","transcript_path":"'"${TMPDIR:-/tmp}"'/baton-ci-transcript.jsonl"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/prompt-nudge.sh)"
+          case "$output" in
+            *"Session model adaptation"*) echo "FAIL: prompt nudge must announce the adaptation only once"; exit 1 ;;
+            *"Sonnet session"*) echo "OK: prompt nudge stayed quiet on the second call for the same tier" ;;
+            *) echo "FAIL: prompt nudge lost the sonnet tier on the second call: $output"; exit 1 ;;
+          esac
+
+          output="$(echo '{"session_id":"citranscript","transcript_path":"'"${TMPDIR:-/tmp}"'/baton-ci-transcript.jsonl"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
+          case "$output" in
+            *"Session model adaptation: Sonnet"*) echo "OK: session-start fell back to transcript detection on resume" ;;
+            *) echo "FAIL: session-start did not fall back to transcript detection: $output"; exit 1 ;;
+          esac
+
+          tier_value="$(cat "${TMPDIR:-/tmp}/fable-baton-tier-citranscript")"
+          if [ "$tier_value" != "sonnet" ]; then
+            echo "FAIL: persisted tier for citranscript expected sonnet, got: $tier_value"
+            exit 1
+          fi
+          echo "OK: persisted tier file for citranscript is sonnet"

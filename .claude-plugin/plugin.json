@@ -1,6 +1,6 @@
 {
   "name": "fable-baton",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Turns Fable 5 into a token-frugal orchestrator: Fable keeps judgment, tiered Opus/Sonnet/Haiku agents do the labor.",
   "author": {
     "name": "realgarit"

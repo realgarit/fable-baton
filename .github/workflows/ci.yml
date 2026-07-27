@@ -90,9 +90,17 @@ jobs:
 
           output="$(echo '{}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"
           case "$output" in
-            *"Session model adaptation"*) echo "FAIL: no-model input must inject the base policy only"; exit 1 ;;
-            *"Orchestration policy"*) echo "OK: no-model input falls back to base policy" ;;
+            *"not yet detected"*) echo "OK: no-model input appends the self-apply fallback" ;;
+            *) echo "FAIL: undetected-model output missing the self-apply fallback: $output"; exit 1 ;;
+          esac
+          case "$output" in
+            *"Orchestration policy"*) echo "OK: no-model input still includes the base policy" ;;
             *) echo "FAIL: base policy missing from output"; exit 1 ;;
+          esac
+          case "$output" in
+            *"Session model adaptation: Opus"*|*"Session model adaptation: Sonnet"*|*"Session model adaptation: Haiku"*)
+              echo "FAIL: undetected-model output must not emit a concrete tier adaptation: $output"; exit 1 ;;
+            *) echo "OK: undetected-model output names no concrete tier" ;;
           esac
 
           output="$(echo '{"model":"claude-sonnet-5","session_id":"citier"}' | CLAUDE_PLUGIN_ROOT=. bash hooks/session-start.sh)"

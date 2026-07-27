@@ -3,8 +3,14 @@
 # Stdout from a SessionStart hook is added to the model's context.
 # The hook input JSON may carry the session's model. When the main model is not
 # Fable, append a tier adaptation so the cost logic stays correct, and persist
-# the detected tier to a state file so the other hooks can read it. Any parse
-# failure falls back to the base (Fable) policy - this must never break a session.
+# the detected tier to a state file so the other hooks can read it. If neither
+# the payload nor the transcript yields a tier (a fresh startup session has no
+# model field and an empty transcript), append a self-apply fallback that lists
+# every tier's override and asks the model to apply its own; the persisted tier
+# file still stores "fable" so the other hooks keep working, and no adapted
+# marker is written so the turn-2 announce in prompt-nudge.sh can still fire
+# once transcript detection succeeds. Any parse failure falls back to the base
+# (Fable) policy - this must never break a session.
 
 tier="$(python3 -c '
 import json
@@ -56,7 +62,7 @@ def tier_from_transcript(transcript_path):
     return None
 
 
-tier = "fable"
+tier = None
 session = "default"
 try:
     payload = json.load(sys.stdin)
@@ -72,23 +78,28 @@ try:
 except Exception:
     pass
 
+detected = tier if tier else "unknown"
+stored_tier = tier if tier else "fable"
+
 safe_session = re.sub(r"[^A-Za-z0-9-]", "", session) or "default"
 try:
     with open(os.path.join(tempfile.gettempdir(), "fable-baton-tier-" + safe_session), "w") as f:
-        f.write(tier)
+        f.write(stored_tier)
 except Exception:
     pass
 
 # The adaptation for this tier is injected below; mark it announced so the
-# per-prompt nudge does not repeat the full text on the first turn.
-if tier in ("opus", "sonnet", "haiku"):
+# per-prompt nudge does not repeat the full text on the first turn. Unknown
+# (undetected) sessions get no marker, so the turn-2 announce can still fire
+# once transcript detection succeeds.
+if detected in ("opus", "sonnet", "haiku"):
     try:
         with open(os.path.join(tempfile.gettempdir(), "fable-baton-adapted-" + safe_session), "w") as f:
-            f.write(tier)
+            f.write(detected)
     except Exception:
         pass
 
-print(tier)
+print(detected)
 ' 2>/dev/null)"
 
 cat "${CLAUDE_PLUGIN_ROOT}/policy/orchestration.md"
@@ -97,5 +108,9 @@ case "$tier" in
   opus|sonnet|haiku)
     echo
     cat "${CLAUDE_PLUGIN_ROOT}/policy/adapt-${tier}.md"
+    ;;
+  unknown)
+    echo
+    cat "${CLAUDE_PLUGIN_ROOT}/policy/adapt-unknown.md"
     ;;
 esac

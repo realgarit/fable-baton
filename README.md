@@ -74,7 +74,7 @@ The routing table assumes Fable is on top. Run a session on another model and th
 
 The per-prompt reminder and the streak counter adapt too, so a Sonnet session is not nudged into hand-offs that save nothing.
 
-One caveat: current Claude Code builds do not tell hooks the session model at startup, so the plugin reads it from the session transcript. A brand-new session has no transcript yet, which means its first turn runs on the base policy and the adaptation arrives with the second prompt. Resumed sessions have a transcript and get it at session start.
+One caveat: current Claude Code builds do not tell hooks the session model at startup, so the plugin reads it from the session transcript. A brand-new session has no transcript yet, so at startup the SessionStart hook cannot tell which model is running and injects a self-apply fallback instead: it lists every tier's override and asks the model to apply the one that matches itself. From the second prompt on, transcript detection confirms that choice or corrects it. Resumed sessions have a transcript already, so they get the right adaptation at session start.
 
 ## What you'll see
 

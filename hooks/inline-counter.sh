@@ -72,6 +72,14 @@ def main():
                 "your context lean. Subagents executing a delegated task: ignore "
                 "this notice."
             )
+        elif tier == "opus":
+            message = (
+                "[fable-baton] " + str(count) + " consecutive inline tool calls "
+                "without delegating. Opus session: this block belongs to a cheaper "
+                "agent (scout for discovery, executor for edits); architect is your "
+                "own tier, so it saves nothing here. Subagents executing a delegated "
+                "task: ignore this notice."
+            )
         elif tier == "haiku":
             message = (
                 "[fable-baton] " + str(count) + " consecutive inline tool calls "

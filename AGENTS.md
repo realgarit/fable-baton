@@ -44,4 +44,4 @@ No package manifest / build step; this is a plugin distributed as plain files (M
 
 <!-- Any agent: append short dated notes here (YYYY-MM-DD, note). Prune notes when stale or once folded into the sections above. -->
 
-- 2026-09-16 — Codex-first layout sweep: repository-local shared skills use `.agents/skills/` as the canonical source. Any `.claude/skills/` path is only a compatibility bridge or generated mirror.
+- 2026-09-16 - Codex-first layout sweep: repository-local shared skills use `.agents/skills/` as the canonical source. Any `.claude/skills/` path is only a compatibility bridge or generated mirror.

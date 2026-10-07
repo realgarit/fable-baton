@@ -42,6 +42,12 @@ No package manifest / build step; this is a plugin distributed as plain files (M
 
 ## Working notes
 
+- 2026-10-08: Dependabot alerts/security updates are enabled. Version updates run
+  weekly on Monday at 06:00 Europe/Zurich for the manifests in .github/dependabot.yml.
+  Minor/patch updates are grouped, majors stay separate, and merging remains review-driven.
+  Routine versions have a seven-day cooldown; security updates are not delayed.
+
+
 <!-- Any agent: append short dated notes here (YYYY-MM-DD, note). Prune notes when stale or once folded into the sections above. -->
 
 - 2026-09-16 - Codex-first layout sweep: repository-local shared skills use `.agents/skills/` as the canonical source. Any `.claude/skills/` path is only a compatibility bridge or generated mirror.

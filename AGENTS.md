@@ -42,7 +42,7 @@ No package manifest / build step; this is a plugin distributed as plain files (M
 
 ## Working notes
 
-- 2026-10-13: Version 1.5.2 includes the hook interpreter/mode fix from contributor PR #24. CI on Linux and macOS invokes the registered commands from an installed path containing spaces after stripping execute bits, and verifies startup policy, persisted tier, prompt nudge, counter notice and reset. Existing direct script tests alone did not cover the packaging defect.
+- 2026-10-13: Version 1.5.2 includes the hook interpreter fix from contributor PR #24. CI on Linux and macOS invokes the registered commands from an installed path containing spaces after stripping execute bits, and verifies startup policy, persisted tier, prompt nudge, counter notice and reset. Existing direct script tests alone did not cover the packaging defect.
 
 
 - 2026-10-08: Dependabot alerts/security updates are enabled. Version updates run
@@ -54,3 +54,5 @@ No package manifest / build step; this is a plugin distributed as plain files (M
 <!-- Any agent: append short dated notes here (YYYY-MM-DD, note). Prune notes when stale or once folded into the sections above. -->
 
 - 2026-09-16 - Codex-first layout sweep: repository-local shared skills use `.agents/skills/` as the canonical source. Any `.claude/skills/` path is only a compatibility bridge or generated mirror.
+
+- 2026-10-13: Version 1.5.3 explicitly preserves all three executable hook modes and checks them in CI. On Windows, use git update-index --chmod=+x after staging hook scripts; an enabled core.fileMode setting can otherwise restore mode 644 during git add. Do not change repository Git configuration.

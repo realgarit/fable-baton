@@ -24,6 +24,12 @@ jobs:
       - name: Shell syntax check
         run: bash -n hooks/*.sh
 
+      - name: Verify executable hook modes in the package source
+        run: |
+          for script in hooks/*.sh; do
+            test "$(git ls-files --stage -- "$script" | cut -d' ' -f1)" = 100755
+          done
+
       - name: Packaged hook commands with stripped permissions
         run: python3 tests/packaged-hooks.py
 

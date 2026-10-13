@@ -1,10 +1,16 @@
 {
   "name": "fable-baton",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Turns Fable 5 into a token-frugal orchestrator: Fable keeps judgment, tiered Opus/Sonnet/Haiku agents do the labor.",
   "author": {
     "name": "realgarit"
   },
   "homepage": "https://github.com/realgarit/fable-baton",
-  "keywords": ["orchestration", "agents", "delegation", "fable", "token-efficiency"]
+  "keywords": [
+    "orchestration",
+    "agents",
+    "delegation",
+    "fable",
+    "token-efficiency"
+  ]
 }

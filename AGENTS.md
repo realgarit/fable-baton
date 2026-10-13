@@ -42,6 +42,9 @@ No package manifest / build step; this is a plugin distributed as plain files (M
 
 ## Working notes
 
+- 2026-10-13: Version 1.5.2 includes the hook interpreter/mode fix from contributor PR #24. CI on Linux and macOS invokes the registered commands from an installed path containing spaces after stripping execute bits, and verifies startup policy, persisted tier, prompt nudge, counter notice and reset. Existing direct script tests alone did not cover the packaging defect.
+
+
 - 2026-10-08: Dependabot alerts/security updates are enabled. Version updates run
   weekly on Monday at 06:00 Europe/Zurich for the manifests in .github/dependabot.yml.
   Minor/patch updates are grouped, majors stay separate, and merging remains review-driven.

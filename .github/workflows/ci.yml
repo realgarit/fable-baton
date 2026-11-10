@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+  # dependabot-automerge starts this on main after its merge.
+  workflow_dispatch:
 
 jobs:
   checks:

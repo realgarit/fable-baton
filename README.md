@@ -62,7 +62,7 @@ The model can still ignore a notice. But ignoring a fresh instruction mid-streak
 
 - **High-risk areas** (auth, billing, migrations, concurrency, public APIs): Fable decides, `architect` executes or reviews, `verifier` confirms with evidence.
 - **Security sessions** (scans, audits, vulnerability triage): even the cheap hands-on steps go to the agents from the start. Fable stays at planning and synthesis. That is the right split anyway, and it avoids interruptions from the top model's intentionally broad safeguards on routine security output.
-- **Setup skill**: `baton-setup` sets your default model to `best` (Fable 5, with Opus fallback) - the one thing a plugin can't set by itself.
+- **Setup skill**: `baton-setup` sets your default model to `fable` (with Opus fallback) - the one thing a plugin can't set by itself. It keeps a deliberate Opus setting.
 
 ### Other session models
 
@@ -100,12 +100,14 @@ In any Claude Code session:
 /plugin install fable-baton@fable-baton
 ```
 
-Then ask Claude to **"run baton-setup"** - it sets `model: "best"` in your `~/.claude/settings.json` (with your approval and a backup) and verifies the install. Restart your session and you're done.
+Then ask Claude to **"run baton-setup"** - it sets `model: "fable"` in your `~/.claude/settings.json` (with your approval and a backup) and verifies the install. Restart your session, run `/model`, and check that the Default row names Fable.
+
+If you ran an older version of the setup, you may have `model: "best"`. Since Claude Code 2.1.321 that alias resolves to Opus, so run the setup again or change it to `"fable"` yourself.
 
 **Requirements**
 
 - Claude Code with plugin support
-- A subscription or API access that includes Fable 5 (the `best` model alias falls back to the latest Opus otherwise - the orchestration still works, just with Opus conducting)
+- A subscription or API access that includes Fable. Without it, keep Opus as your model. The orchestration still works, just with Opus conducting.
 
 ## Day-to-day
 

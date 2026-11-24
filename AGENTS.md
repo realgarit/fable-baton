@@ -8,7 +8,7 @@ Repo layout:
 - `agents/`: the four tiered subagent definitions (`architect.md`, `executor.md`, `scout.md`, `verifier.md`)
 - `hooks/`: `hooks.json` plus the shell scripts (`session-start.sh`, `prompt-nudge.sh`, `inline-counter.sh`) that enforce delegation
 - `policy/orchestration.md`: the orchestration policy text injected at session start
-- `skills/baton-setup/`: the one-time setup skill that sets the default model to `best`
+- `skills/baton-setup/`: the one-time setup skill that sets the default model to `fable`
 - `.claude-plugin/`: `plugin.json` (plugin manifest) and `marketplace.json`
 - `assets/`: README images/GIFs
 
@@ -56,3 +56,5 @@ No package manifest / build step; this is a plugin distributed as plain files (M
 - 2026-09-16 - Codex-first layout sweep: repository-local shared skills use `.agents/skills/` as the canonical source. Any `.claude/skills/` path is only a compatibility bridge or generated mirror.
 
 - 2026-10-13: Version 1.5.3 explicitly preserves all three executable hook modes and checks them in CI. On Windows, use git update-index --chmod=+x after staging hook scripts; an enabled core.fileMode setting can otherwise restore mode 644 during git add. Do not change repository Git configuration.
+
+- 2026-11-24: Version 1.5.4 switches baton-setup from `model: "best"` to `"fable"`. Claude Code 2.1.321+ resolves `best` to the same model as `opus`, so the old setup looked successful but ran Opus. The skill now treats an existing `best` as stale, keeps deliberate Opus settings, and has the user confirm the resolved model with `/model` in a fresh session.
